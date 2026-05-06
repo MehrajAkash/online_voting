@@ -1,0 +1,21 @@
+{% extends 'voting/base.html' %}
+{% block title %}Elections{% endblock %}
+{% block content %}
+<h2>🗳️ Active Elections</h2>
+{% for election in elections %}
+<div class="card">
+    <h3>{{ election.title }}</h3>
+    <p style="color:#718096;">{{ election.description }}</p>
+    <p><small>📅 {{ election.start_date|date:"M d, Y H:i" }} – {{ election.end_date|date:"M d, Y H:i" }}</small></p>
+    <br>
+    {% if election.id in voted_election_ids %}
+        <span style="color:green; font-weight:bold;">✅ You have voted</span>
+        <a href="{% url 'results' election.id %}" class="btn btn-primary" style="margin-left:1rem;">View Results</a>
+    {% else %}
+        <a href="{% url 'vote' election.id %}" class="btn btn-success">Vote Now</a>
+    {% endif %}
+</div>
+{% empty %}
+<div class="card"><p>No elections are currently open.</p></div>
+{% endfor %}
+{% endblock %}

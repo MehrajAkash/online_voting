@@ -1,0 +1,33 @@
+{% extends 'voting/base.html' %}
+{% block title %}Results - {{ election.title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>📊 Results: {{ election.title }}</h2>
+    <p style="color:#718096; margin-bottom:1.5rem;">Total votes cast: <strong>{{ total_votes }}</strong></p>
+
+    {% for item in candidate_data %}
+    <div style="margin-bottom:1.2rem;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+            <span><strong>{{ forloop.counter }}. {{ item.candidate.name }}</strong>
+                {% if item.candidate.party %}<span style="color:#718096;"> — {{ item.candidate.party }}</span>{% endif %}
+            </span>
+            <span><strong>{{ item.count }}</strong> votes ({{ item.percentage }}%)</span>
+        </div>
+        <div style="background:#e2e8f0; border-radius:99px; height:20px;">
+            <div style="background: {% if forloop.first %}#276749{% else %}#2b6cb0{% endif %}; width:{{ item.percentage }}%; height:100%; border-radius:99px; transition:width 1s;"></div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No votes have been cast yet.</p>
+    {% endfor %}
+
+    {% if candidate_data %}
+    <div style="margin-top:2rem; padding:1rem; background:#f0fff4; border-radius:8px; border-left:4px solid #276749;">
+        🏆 <strong>Winner: {{ candidate_data.0.candidate.name }}</strong>
+        {% if candidate_data.0.candidate.party %} ({{ candidate_data.0.candidate.party }}){% endif %}
+        with {{ candidate_data.0.count }} votes ({{ candidate_data.0.percentage }}%)
+    </div>
+    {% endif %}
+</div>
+<a href="{% url 'vote_list' %}" class="btn btn-primary">← Back to Elections</a>
+{% endblock %}

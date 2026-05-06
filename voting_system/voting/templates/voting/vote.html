@@ -1,0 +1,23 @@
+{% extends 'voting/base.html' %}
+{% block title %}Vote - {{ election.title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>🗳️ {{ election.title }}</h2>
+    <p style="color:#718096; margin-bottom:1.5rem;">{{ election.description }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <p style="font-weight:600; margin-bottom:1rem;">Select your candidate:</p>
+        {% for radio in form.candidate %}
+        <div style="display:flex; align-items:center; padding:0.8rem; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:0.5rem; cursor:pointer;">
+            {{ radio.tag }}
+            <label for="{{ radio.id_for_label }}" style="margin-left:0.8rem; cursor:pointer; font-weight:normal;">
+                <strong>{{ radio.choice_label }}</strong>
+            </label>
+        </div>
+        {% endfor %}
+        <br>
+        <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure? You cannot change your vote.')">✅ Submit Vote</button>
+        <a href="{% url 'vote_list' %}" class="btn" style="background:#e2e8f0; margin-left:0.5rem;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

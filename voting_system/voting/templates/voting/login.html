@@ -1,0 +1,16 @@
+{% extends 'voting/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 0 auto;">
+    <h2>🔐 Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label>{{ field.label }}</label>
+            {{ field }}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">Login</button>
+    </form>
+    <p style="margin-top:1rem; text-align:center;">No account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+{% endblock %}
